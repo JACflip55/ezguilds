@@ -1,11 +1,41 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthContext, useAuthProvider, useAuth } from "./hooks/useAuth";
+import { LoginPage } from "./pages/LoginPage";
+
+function AuthGate({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        color: "var(--text-muted)",
+      }}>
+        Loading...
+      </div>
+    );
+  }
+
+  if (!user) return <LoginPage />;
+  return <>{children}</>;
+}
 
 export function App() {
+  const authState = useAuthProvider();
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<div>EZGuilds</div>} />
-      </Routes>
-    </BrowserRouter>
+    <AuthContext.Provider value={authState}>
+      <BrowserRouter>
+        <AuthGate>
+          <Routes>
+            <Route path="/" element={<div style={{ padding: "2rem" }}><h1>EZGuilds</h1><p style={{ color: "var(--text-muted)" }}>Welcome — app shell ready.</p></div>} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </AuthGate>
+      </BrowserRouter>
+    </AuthContext.Provider>
   );
 }
