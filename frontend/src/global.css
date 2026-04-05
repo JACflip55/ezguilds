@@ -1,0 +1,48 @@
+:root {
+  --bg-primary: #1a1f1a;
+  --bg-surface: #232a23;
+  --bg-elevated: rgba(100, 130, 70, 0.1);
+  --text-primary: #e8e0d0;
+  --text-secondary: #d4c8a8;
+  --text-muted: #a89880;
+  --text-faint: #706850;
+  --accent-green: #4a6a30;
+  --accent-green-hover: #5a7a3a;
+  --accent-green-light: #8ab060;
+  --accent-green-heading: #b8c890;
+  --border: rgba(140, 160, 100, 0.2);
+  --border-light: rgba(140, 160, 100, 0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+h1, h2, h3 { color: var(--text-secondary); }
+h1 { color: var(--accent-green-heading); }
+
+button {
+  background: var(--accent-green);
+  color: var(--text-primary);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+button:hover { background: var(--accent-green-hover); }
+
+input, textarea {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-family: inherit;
+}
+input::placeholder, textarea::placeholder { color: var(--text-faint); }
