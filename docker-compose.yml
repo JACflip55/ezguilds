@@ -1,0 +1,33 @@
+services:
+  firebase-emulator:
+    image: andreysenov/firebase-tools
+    command: firebase emulators:start --only auth,firestore --project demo-ezguilds
+    ports:
+      - "9099:9099"   # Auth emulator
+      - "8081:8080"   # Firestore emulator
+      - "4000:4000"   # Emulator UI
+
+  api:
+    build: ./api
+    ports:
+      - "8000:8080"
+    environment:
+      - FIRESTORE_EMULATOR_HOST=firebase-emulator:8080
+      - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulator:9099
+      - GCS_BUCKET=demo-ezguilds-uploads
+      - GCP_PROJECT=demo-ezguilds
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    depends_on:
+      - firebase-emulator
+
+  worker:
+    build: ./worker
+    ports:
+      - "8001:8080"
+    environment:
+      - FIRESTORE_EMULATOR_HOST=firebase-emulator:8080
+      - GCS_BUCKET=demo-ezguilds-uploads
+      - GCP_PROJECT=demo-ezguilds
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    depends_on:
+      - firebase-emulator
