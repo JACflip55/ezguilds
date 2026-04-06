@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext, useAuthProvider, useAuth } from "./hooks/useAuth";
 import { LoginPage } from "./pages/LoginPage";
 import { UploadPage } from "./pages/UploadPage";
+import { QuestionsPage } from "./pages/QuestionsPage";
 
 function AuthGate({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -33,6 +34,7 @@ export function App() {
         <AuthGate>
           <Routes>
             <Route path="/" element={<UploadPage />} />
+            <Route path="/project/:projectId/questions" element={<QuestionsPage />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </AuthGate>
