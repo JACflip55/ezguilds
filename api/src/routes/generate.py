@@ -6,6 +6,7 @@ from google.cloud import tasks_v2
 
 from src.auth import _get_uid_from_token
 from src.firestore import get_project, update_project
+from src.rate_limit import generate_limiter, RateLimitExceeded
 
 router = APIRouter()
 
@@ -38,6 +39,11 @@ def start_generation(project_id: str, uid: str = Depends(_get_uid_from_token)):
         raise HTTPException(status_code=404, detail="Project not found")
     if project.owner_uid != uid:
         raise HTTPException(status_code=403, detail="Not your project")
+
+    try:
+        generate_limiter.check(uid, "generate")
+    except RateLimitExceeded as e:
+        raise HTTPException(status_code=429, detail=str(e))
 
     update_project(project_id, {
         "status": "generating",

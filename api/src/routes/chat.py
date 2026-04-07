@@ -6,6 +6,7 @@ from src.auth import _get_uid_from_token
 from src.firestore import get_project, update_project
 from src.gemini import generate_chat_response
 from src.models import ChatMessage
+from src.rate_limit import chat_limiter, RateLimitExceeded
 from src.routes.generate import enqueue_generation
 from src.storage import upload_file
 
@@ -24,6 +25,11 @@ async def chat(
         raise HTTPException(status_code=404, detail="Project not found")
     if project.owner_uid != uid:
         raise HTTPException(status_code=403, detail="Not your project")
+
+    try:
+        chat_limiter.check(uid, "chat")
+    except RateLimitExceeded as e:
+        raise HTTPException(status_code=429, detail=str(e))
 
     # Handle optional file upload
     if file:
