@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.routes import projects, upload, questions, generate, design
+from src.routes import projects, upload, questions, generate, design, chat
 
 app = FastAPI(title="EZGuilds API")
 
@@ -18,6 +18,7 @@ app.include_router(upload.router)
 app.include_router(questions.router)
 app.include_router(generate.router)
 app.include_router(design.router)
+app.include_router(chat.router)
 
 
 @app.get("/health")

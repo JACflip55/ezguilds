@@ -4,6 +4,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { UploadPage } from "./pages/UploadPage";
 import { QuestionsPage } from "./pages/QuestionsPage";
 import { GeneratingPage } from "./pages/GeneratingPage";
+import { ReviewPage } from "./pages/ReviewPage";
 
 function AuthGate({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -37,6 +38,7 @@ export function App() {
             <Route path="/" element={<UploadPage />} />
             <Route path="/project/:projectId/questions" element={<QuestionsPage />} />
             <Route path="/project/:projectId/generating" element={<GeneratingPage />} />
+            <Route path="/project/:projectId/review" element={<ReviewPage />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </AuthGate>
