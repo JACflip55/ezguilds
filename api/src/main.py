@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.routes import projects, upload, questions
+from src.routes import projects, upload, questions, generate, design
 
 app = FastAPI(title="EZGuilds API")
 
@@ -16,6 +16,8 @@ app.add_middleware(
 app.include_router(projects.router)
 app.include_router(upload.router)
 app.include_router(questions.router)
+app.include_router(generate.router)
+app.include_router(design.router)
 
 
 @app.get("/health")
